@@ -31,9 +31,10 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
-          images: ${{ format('ghcr.io/{0}', github.repository) }}:v10-sp${{ matrix.SP_VERSION }}
+          images: ${{ format('ghcr.io/{0}', github.repository) }}
+          tags: type=raw,value=v10-sp${{ matrix.SP_VERSION }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
