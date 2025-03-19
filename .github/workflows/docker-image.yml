@@ -29,6 +29,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ format('ghcr.io/{0}', github.repository) }}:v10-sp${{ matrix.SP_VERSION }}
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -38,4 +44,4 @@ jobs:
             SP_VERSION=${{ matrix.SP_VERSION }}
           file: ./kylin_v10.sys.Dockerfile
           push: true
-          tags: ${{ format('ghcr.io/{0}', github.repository) }}:v10-sp${{ matrix.SP_VERSION }}
+          tags: ${{ steps.meta.outputs.tags }}
